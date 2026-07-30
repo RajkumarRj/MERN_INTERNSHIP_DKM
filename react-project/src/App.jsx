@@ -45,18 +45,20 @@ function App() {
   // console.log(obj.name , obj.course );
   const addTask = (e) => {
     e.preventDefault();
+
     const newTask = {
       id: tasks.length + 1,
       title,
       description,
       priority,
-      dueDate : date,
+      dueDate: date,
       status: "Pending",
     };
 
     console.log(newTask);
-
-    setTasks([...tasks, newTask]);
+    if (title !== "") {
+      setTasks([...tasks, newTask]);
+    }
 
     setTitle("");
     setDescription("");
@@ -66,7 +68,6 @@ function App() {
 
   return (
     <div className="parent-container">
-      
       <section className="form-container">
         <form onSubmit={(e) => addTask(e)}>
           {/* get input from user for task title  */}
