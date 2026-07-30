@@ -1,0 +1,20 @@
+body {
+  margin: 0;
+  background-color: #333;
+  color: white;
+}
+
+.parent-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.form-container{
+    border: 2px solid #fff;
+    box-shadow: 0 0 5px #fff;
+
+}
