@@ -1,7 +1,5 @@
 body {
-  margin: 0;
-  background-color: #333;
-  color: white;
+  /* background-color: ; */
 }
 
 .parent-container {
@@ -11,10 +9,71 @@ body {
   justify-content: center;
   align-items: center;
   gap: 20px;
+  padding: 20px;
 }
 
-.form-container{
-    border: 2px solid #fff;
-    box-shadow: 0 0 5px #fff;
+.form-container {
+  border: 2px solid #fff;
+  box-shadow: 0 0 5px #333;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  background-color: #444;
+  color: white;
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+.form-group input,
+.form-group select {
+  padding: 8px;
+  border: none;
+  border-radius: 10px;
+  outline: none;
+  background-color: #555;
+  color: white;
+}
 
+.form-group input::placeholder {
+  color: #bbb;
+}
+
+.form-actions {
+  text-align: center;
+}
+.form-actions button{
+  border: none;
+  padding: 8px 20px;
+  border-radius: 10px;
+}
+.form-actions button:hover {
+  background-color: #019875;
+  color: white;
+
+}
+
+table, tr , td , th{
+  border: 1px solid #666;
+  padding: 12px;
+  text-align: center;
+}
+
+th{
+  background-color: #474040;
+  font-weight: bold;
+
+}
+.table-container table{
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #444;
+  color: #ebe6e6;
+  
+  /* border-radius: 10px; */
+}
+
+.table-container tr:hover{
+  background-color: #555;
 }

@@ -129,7 +129,7 @@ function App() {
       {/* conditional rendering  */}
 
       <section className="table-container">
-        <table border={5}>
+        <table >
           <tr>
             <th>S.no</th>
             <th>Title</th>
