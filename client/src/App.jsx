@@ -7,26 +7,10 @@
 import { useState } from "react";
 import Child from "./Child";
 import "./App.css";
-
+import Header from "./Header";
+import { toast, ToastContainer } from "react-toastify";
 function App() {
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      title: "Create wireframe design",
-      description: "Create task management wireframe web page layout",
-      priority: "High",
-      dueDate: "2026-7-29",
-      status: "Completed",
-    },
-    {
-      id: 2,
-      title: "Create github account",
-      description: "Gihub is used to store and manage your project",
-      priority: "Medium",
-      dueDate: "2026-7-31",
-      status: "Pending",
-    },
-  ]);
+  const [tasks, setTasks] = useState([]);
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -46,6 +30,11 @@ function App() {
   const addTask = (e) => {
     e.preventDefault();
 
+    if (title.trim() === "") {
+      toast.error("Task title cannot be empty!");
+      return;
+    }
+
     const newTask = {
       id: tasks.length + 1,
       title,
@@ -60,14 +49,31 @@ function App() {
       setTasks([...tasks, newTask]);
     }
 
+    toast.success("Task added successfully");
+
     setTitle("");
     setDescription("");
     setPriority("");
     setDate("");
   };
 
+  const deleteTask = (id) => {
+    // filter
+    const updateTask = tasks.filter((task) => task.id !== id);
+
+    setTasks(updateTask);
+    toast.info("Task deleted!");
+  };
+
   return (
     <div className="parent-container">
+      <ToastContainer
+        toastStyle={{ backgroundColor: "black", color: "white" }}
+        position="top-right"
+        autoClose={3000}
+      />
+      <Header />
+
       <section className="form-container">
         <form onSubmit={(e) => addTask(e)}>
           {/* get input from user for task title  */}
@@ -129,7 +135,7 @@ function App() {
       {/* conditional rendering  */}
 
       <section className="table-container">
-        <table >
+        <table>
           <tr>
             <th>S.no</th>
             <th>Title</th>
@@ -137,11 +143,12 @@ function App() {
             <th>priority</th>
             <th>Due date</th>
             <th>Status</th>
+            <th>Action</th>
           </tr>
 
           {tasks.length === 0 ? (
             <tr>
-              <td colSpan={6}>Task not found</td>
+              <td colSpan={7}>Task not found</td>
             </tr>
           ) : (
             tasks.map((task) => (
@@ -152,6 +159,21 @@ function App() {
                 <td>{task.priority}</td>
                 <td>{task.dueDate}</td>
                 <td>{task.status}</td>
+                <td>
+                  <button
+                    onClick={() => deleteTask(task.id)}
+                    style={{
+                      backgroundColor: "red",
+                      color: "white",
+                      border: "none",
+                      padding: "5px 10px",
+                      cursor: "pointer",
+                      borderRadius: "5px",
+                    }}
+                  >
+                    Delete
+                  </button>
+                </td>
               </tr>
             ))
           )}
