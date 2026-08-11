@@ -4,7 +4,7 @@
 //component => resuable
 //props => pass value to child component
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Child from "./Child";
 import "./App.css";
 import Header from "./Header";
@@ -18,6 +18,12 @@ function App() {
   const [date, setDate] = useState("");
 
   console.log(title);
+
+  useEffect(() => {
+    fetch("http://localhost:3000/home")
+      .then((res) => res.json())
+      .then((res) => console.log(res.message));
+  }, []);
 
   // array of object
 
