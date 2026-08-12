@@ -20,7 +20,7 @@ function App() {
   console.log(title);
 
   useEffect(() => {
-    fetch("http://localhost:3000/home")
+    fetch("https://mern-internship-dkm.onrender.com/home")
       .then((res) => res.json())
       .then((res) => console.log(res.message));
   }, []);
