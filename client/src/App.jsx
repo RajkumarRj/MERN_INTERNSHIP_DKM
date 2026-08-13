@@ -19,6 +19,14 @@ function App() {
 
   console.log(title);
 
+  useEffect(()=>{
+    const savedTasks = localStorage.getItem("tasks");
+
+    if(savedTasks){
+      setTasks(JSON.parse(savedTasks));
+    }
+  },[])
+
   useEffect(() => {
     fetch("https://mern-internship-dkm.onrender.com/home")
       .then((res) => res.json())
@@ -70,6 +78,19 @@ function App() {
     setTasks(updateTask);
     toast.info("Task deleted!");
   };
+
+  const updateStatus = (id) => {
+    const updatedTask = tasks.map((task) =>
+      task.id === id ? { ...task, status: "Completed" } : task,
+    );
+    console.log(updatedTask);
+    setTasks(updatedTask);
+    toast.success("Task changed to completed");
+  };
+
+  useEffect(()=>{
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }   , [tasks]);
 
   return (
     <div className="parent-container">
@@ -178,6 +199,22 @@ function App() {
                     }}
                   >
                     Delete
+                  </button>
+
+                  <button
+                    onClick={() => updateStatus(task.id)}
+                    disabled = {task.status === "Completed"}
+                    style={{
+                      border: "none",
+                      borderRadius: "5px",
+                      padding: "5px 10px",
+                      backgroundColor: task.status === "Completed" ? "gray":"green",
+                      color: "white",
+                      cursor: "pointer",
+                      marginLeft: "10px",
+                    }}
+                  >
+                    Complete
                   </button>
                 </td>
               </tr>
