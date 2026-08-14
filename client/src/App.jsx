@@ -9,6 +9,7 @@ import Child from "./Child";
 import "./App.css";
 import Header from "./Header";
 import { toast, ToastContainer } from "react-toastify";
+import TaskForm from "./TaskForm";
 function App() {
   const [tasks, setTasks] = useState([]);
 
@@ -19,13 +20,13 @@ function App() {
 
   console.log(title);
 
-  useEffect(()=>{
+  useEffect(() => {
     const savedTasks = localStorage.getItem("tasks");
 
-    if(savedTasks){
+    if (savedTasks) {
       setTasks(JSON.parse(savedTasks));
     }
-  },[])
+  }, []);
 
   useEffect(() => {
     fetch("https://mern-internship-dkm.onrender.com/home")
@@ -41,34 +42,10 @@ function App() {
   // }
 
   // console.log(obj.name , obj.course );
-  const addTask = (e) => {
-    e.preventDefault();
-
-    if (title.trim() === "") {
-      toast.error("Task title cannot be empty!");
-      return;
-    }
-
-    const newTask = {
-      id: tasks.length + 1,
-      title,
-      description,
-      priority,
-      dueDate: date,
-      status: "Pending",
-    };
-
-    console.log(newTask);
-    if (title !== "") {
-      setTasks([...tasks, newTask]);
-    }
-
+  const addTask = (newTask) => {
+    const taskwithId = { ...newTask, status: "Pending", id: Date.now() };
+    setTasks([...tasks, taskwithId]);
     toast.success("Task added successfully");
-
-    setTitle("");
-    setDescription("");
-    setPriority("");
-    setDate("");
   };
 
   const deleteTask = (id) => {
@@ -88,9 +65,9 @@ function App() {
     toast.success("Task changed to completed");
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     localStorage.setItem("tasks", JSON.stringify(tasks));
-  }   , [tasks]);
+  }, [tasks]);
 
   return (
     <div className="parent-container">
@@ -101,62 +78,9 @@ function App() {
       />
       <Header />
 
-      <section className="form-container">
-        <form onSubmit={(e) => addTask(e)}>
-          {/* get input from user for task title  */}
-          <div className="form-group">
-            <label htmlFor="">Task title</label>
-            <input
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="Enter Task title"
-            />
-          </div>
-          {/* description  */}
-          <div className="form-group">
-            <label htmlFor="">Description</label>
-            <input
-              type="text"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Enter Description for your title"
-            />
-          </div>
+      <TaskForm addTask={addTask} />
 
-          {/* priority  */}
-
-          <div className="form-group">
-            <label htmlFor="">Priority</label>
-            <select
-              value={priority}
-              onChange={(e) => setPriority(e.target.value)}
-            >
-              <option value="Low">Low</option>
-              <option value="Medium">Medium</option>
-
-              <option value="High">High</option>
-            </select>
-          </div>
-
-          {/* Date  */}
-          <div className="form-group">
-            <label htmlFor=""> Due Date</label>
-            <input
-              type="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              placeholder="Enter Description for your title"
-            />
-          </div>
-
-          {/* submit */}
-
-          <div className="form-actions">
-            <button type="submit">Add Task</button>
-          </div>
-        </form>
-      </section>
+     
       {/* list rendering  */}
 
       {/* conditional rendering  */}
@@ -203,12 +127,13 @@ function App() {
 
                   <button
                     onClick={() => updateStatus(task.id)}
-                    disabled = {task.status === "Completed"}
+                    disabled={task.status === "Completed"}
                     style={{
                       border: "none",
                       borderRadius: "5px",
                       padding: "5px 10px",
-                      backgroundColor: task.status === "Completed" ? "gray":"green",
+                      backgroundColor:
+                        task.status === "Completed" ? "gray" : "green",
                       color: "white",
                       cursor: "pointer",
                       marginLeft: "10px",
@@ -231,6 +156,8 @@ function App() {
       {/* self closing tag  */}
       {/* <Child name="FIIT" />
       <Child name="Academy" /> */}
+
+      {/* react -> component based architecture  */}
     </div>
   );
 }
