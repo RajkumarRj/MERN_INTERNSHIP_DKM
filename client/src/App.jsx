@@ -10,6 +10,7 @@ import "./App.css";
 import Header from "./Header";
 import { toast, ToastContainer } from "react-toastify";
 import TaskForm from "./TaskForm";
+import TaskTabel from "./TaskTabel";
 function App() {
   const [tasks, setTasks] = useState([]);
 
@@ -71,6 +72,7 @@ function App() {
 
   return (
     <div className="parent-container">
+      {/* this is toatcontainer from libray react-toastify */}
       <ToastContainer
         toastStyle={{ backgroundColor: "black", color: "white" }}
         position="top-right"
@@ -80,73 +82,13 @@ function App() {
 
       <TaskForm addTask={addTask} />
 
-     
       {/* list rendering  */}
 
       {/* conditional rendering  */}
 
-      <section className="table-container">
-        <table>
-          <tr>
-            <th>S.no</th>
-            <th>Title</th>
-            <th>Description</th>
-            <th>priority</th>
-            <th>Due date</th>
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
+      <TaskTabel tasks = {tasks} deleteTask={deleteTask} updateStatus={updateStatus}/>
 
-          {tasks.length === 0 ? (
-            <tr>
-              <td colSpan={7}>Task not found</td>
-            </tr>
-          ) : (
-            tasks.map((task) => (
-              <tr>
-                <td>{task.id}</td>
-                <td>{task.title}</td>
-                <td>{task.description}</td>
-                <td>{task.priority}</td>
-                <td>{task.dueDate}</td>
-                <td>{task.status}</td>
-                <td>
-                  <button
-                    onClick={() => deleteTask(task.id)}
-                    style={{
-                      backgroundColor: "red",
-                      color: "white",
-                      border: "none",
-                      padding: "5px 10px",
-                      cursor: "pointer",
-                      borderRadius: "5px",
-                    }}
-                  >
-                    Delete
-                  </button>
-
-                  <button
-                    onClick={() => updateStatus(task.id)}
-                    disabled={task.status === "Completed"}
-                    style={{
-                      border: "none",
-                      borderRadius: "5px",
-                      padding: "5px 10px",
-                      backgroundColor:
-                        task.status === "Completed" ? "gray" : "green",
-                      color: "white",
-                      cursor: "pointer",
-                      marginLeft: "10px",
-                    }}
-                  >
-                    Complete
-                  </button>
-                </td>
-              </tr>
-            ))
-          )}
-        </table>
-      </section>
+     
 
       {/* 
       JSX 
