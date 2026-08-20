@@ -1,8 +1,10 @@
-import React from 'react'
+import React from "react";
 
-const TaskTabel = ({tasks, deleteTask, updateStatus}) => {
+const TaskTabel = ({ tasks, deleteTask, updateStatus }) => {
+  const today = new Date();
 
-    
+  today.setHours(0, 0, 0, 0);
+
   return (
     <section className="table-container">
       <table>
@@ -21,52 +23,69 @@ const TaskTabel = ({tasks, deleteTask, updateStatus}) => {
             <td colSpan={7}>Task not found</td>
           </tr>
         ) : (
-          tasks.map((task) => (
-            <tr>
-              <td>{task.id}</td>
-              <td>{task.title}</td>
-              <td>{task.description}</td>
-              <td>{task.priority}</td>
-              <td>{task.dueDate}</td>
-              <td>{task.status}</td>
-              <td>
-                <button
-                  onClick={() => deleteTask(task.id)}
-                  style={{
-                    backgroundColor: "red",
-                    color: "white",
-                    border: "none",
-                    padding: "5px 10px",
-                    cursor: "pointer",
-                    borderRadius: "5px",
-                  }}
-                >
-                  Delete
-                </button>
+          tasks.map((task, index) => {
+            // expire check
+            const taskDate = new Date(task.dueDate);
 
-                <button
-                  onClick={() => updateStatus(task.id)}
-                  disabled={task.status === "Completed"}
+            const isOverDue = taskDate < today && task.status !== "Completed";
+
+            const displayStatus = isOverDue ? "Incomplete" : task.status;
+
+            return (
+              <tr key={task.id}>
+                <td>{index + 1}</td>
+                <td>{task.title}</td>
+                <td>{task.description}</td>
+                <td>{task.priority}</td>
+                <td>{task.dueDate}</td>
+                <td
                   style={{
-                    border: "none",
-                    borderRadius: "5px",
-                    padding: "5px 10px",
-                    backgroundColor:
-                      task.status === "Completed" ? "gray" : "green",
-                    color: "white",
-                    cursor: "pointer",
-                    marginLeft: "10px",
+                    color: isOverDue ? "red" : "white",
+                    fontWeight: isOverDue ? "bold" : "normal",
                   }}
                 >
-                  Complete
-                </button>
-              </td>
-            </tr>
-          ))
+                  {displayStatus}
+                </td>
+                <td>
+                  <button
+                    onClick={() => deleteTask(task.id)}
+                    disabled={isOverDue}
+                    style={{
+                      backgroundColor: isOverDue ? "#ffcccc" :"red",
+                      color: "white",
+                      border: "none",
+                      padding: "5px 10px",
+                      cursor: "pointer",
+                      borderRadius: "5px",
+                    }}
+                  >
+                    Delete
+                  </button>
+
+                  <button
+                    onClick={() => updateStatus(task.id)}
+                    disabled={isOverDue || task.status === "Completed"}
+                    style={{
+                      border: "none",
+                      borderRadius: "5px",
+                      padding: "5px 10px",
+                      backgroundColor:( isOverDue || 
+                        task.status === "Completed" ? "gray" : "green"),
+                      color: "white",
+                      cursor: "pointer",
+                      marginLeft: "10px",
+                    }}
+                  >
+                    Complete
+                  </button>
+                </td>
+              </tr>
+            );
+          })
         )}
       </table>
     </section>
   );
-}
+};
 
-export default TaskTabel
+export default TaskTabel;

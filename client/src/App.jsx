@@ -88,7 +88,7 @@ function App() {
 
       <TaskTabel tasks = {tasks} deleteTask={deleteTask} updateStatus={updateStatus}/>
 
-     
+    
 
       {/* 
       JSX 
