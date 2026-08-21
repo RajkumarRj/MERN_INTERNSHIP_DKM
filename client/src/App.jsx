@@ -14,6 +14,8 @@ import TaskTabel from "./TaskTabel";
 function App() {
   const [tasks, setTasks] = useState([]);
 
+  const [editingTask, setEditingTask] = useState(null);
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState("");
@@ -70,6 +72,18 @@ function App() {
     localStorage.setItem("tasks", JSON.stringify(tasks));
   }, [tasks]);
 
+  console.log(editingTask);
+
+  const editTask = (updatedTask) => {
+    const updatedTasks = tasks.map((task) =>
+      task.id === updatedTask.id ? updatedTask : task,
+    );
+
+    setTasks(updatedTasks);
+    setEditingTask(null);
+    toast.success("Task updated!");
+  };
+
   return (
     <div className="parent-container">
       {/* this is toatcontainer from libray react-toastify */}
@@ -80,15 +94,18 @@ function App() {
       />
       <Header />
 
-      <TaskForm addTask={addTask} />
+      <TaskForm addTask={addTask} editingTask={editingTask} editTask={editTask} cancelEdit = {()=>setEditingTask(null)} />
 
       {/* list rendering  */}
 
       {/* conditional rendering  */}
 
-      <TaskTabel tasks = {tasks} deleteTask={deleteTask} updateStatus={updateStatus}/>
-
-    
+      <TaskTabel
+        tasks={tasks}
+        deleteTask={deleteTask}
+        updateStatus={updateStatus}
+        onEdit={(task) => setEditingTask(task)}
+      />
 
       {/* 
       JSX 

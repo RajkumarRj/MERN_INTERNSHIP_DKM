@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-const TaskForm = ({ addTask }) => {
+const TaskForm = ({ addTask, editingTask, editTask, cancelEdit }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState("");
@@ -47,7 +47,6 @@ const TaskForm = ({ addTask }) => {
 
       setDescription(aiText.trim());
 
-
       toast.success("AI generated a description");
     } catch (error) {
       toast.error("Something went wrong with ai ");
@@ -60,12 +59,22 @@ const TaskForm = ({ addTask }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    addTask({
-      title,
-      description,
-      priority,
-      dueDate: date,
-    });
+    if (editingTask) {
+      editTask({
+        ...editingTask,
+        title,
+        description,
+        priority,
+        dueDate: date,
+      });
+    } else {
+      addTask({
+        title,
+        description,
+        priority,
+        dueDate: date,
+      });
+    }
 
     setTitle("");
     setDescription("");
@@ -73,7 +82,19 @@ const TaskForm = ({ addTask }) => {
     setDate("");
   };
 
-  
+  useEffect(() => {
+    if (editingTask) {
+      setTitle(editingTask.title);
+      setDescription(editingTask.description);
+      setPriority(editingTask.priority);
+      setDate(editingTask.dueDate);
+    }else{
+       setTitle("");
+       setDescription("");
+       setPriority("");
+       setDate("");
+    }
+  }, [editingTask]);
 
   return (
     <div>
@@ -147,7 +168,15 @@ const TaskForm = ({ addTask }) => {
           {/* submit */}
 
           <div className="form-actions">
-            <button type="submit">Add Task</button>
+            <button type="submit">
+              {editingTask ? "Update task" : "Add task"}
+            </button>
+
+            {editingTask && (
+              <button type="button" onClick={cancelEdit}>
+                Cancel
+              </button>
+            )}
           </div>
         </form>
       </section>

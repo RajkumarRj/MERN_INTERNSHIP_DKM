@@ -1,6 +1,6 @@
 import React from "react";
 
-const TaskTabel = ({ tasks, deleteTask, updateStatus }) => {
+const TaskTabel = ({ tasks, deleteTask, updateStatus, onEdit }) => {
   const today = new Date();
 
   today.setHours(0, 0, 0, 0);
@@ -48,10 +48,23 @@ const TaskTabel = ({ tasks, deleteTask, updateStatus }) => {
                 </td>
                 <td>
                   <button
+                    onClick={() => onEdit(task)}
+                    style={{
+                      backgroundColor: "blue",
+                      color: "white",
+                      border: "none",
+                      borderRadius: "5px",
+                      padding:"5px",
+                      marginRight:"10px"
+                    }}
+                  >
+                    Edit
+                  </button>
+                  <button
                     onClick={() => deleteTask(task.id)}
                     disabled={isOverDue}
                     style={{
-                      backgroundColor: isOverDue ? "#ffcccc" :"red",
+                      backgroundColor: isOverDue ? "#ffcccc" : "red",
                       color: "white",
                       border: "none",
                       padding: "5px 10px",
@@ -69,8 +82,10 @@ const TaskTabel = ({ tasks, deleteTask, updateStatus }) => {
                       border: "none",
                       borderRadius: "5px",
                       padding: "5px 10px",
-                      backgroundColor:( isOverDue || 
-                        task.status === "Completed" ? "gray" : "green"),
+                      backgroundColor:
+                        isOverDue || task.status === "Completed"
+                          ? "gray"
+                          : "green",
                       color: "white",
                       cursor: "pointer",
                       marginLeft: "10px",
